@@ -1,0 +1,6 @@
+{
+  "version": "0.2",
+  "language": "en",
+  "words": [ "Avenir" ],
+  "ignorePaths": [ "node_modules", "package.json", "tsconfig.json", "public", "src/assets" ]
+}
