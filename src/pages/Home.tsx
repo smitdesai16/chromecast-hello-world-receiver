@@ -9,11 +9,9 @@ const Home = () => {
 
 	return (
 		<ErrorBoundary fallbackRender={fallbackRender}>
-			<div>
-				<Suspense fallback={<p>Loading Hello World</p>}>
-					<HelloWorld />
-				</Suspense>
-			</div>
+			<Suspense fallback={<p>Loading Hello World</p>}>
+				<HelloWorld />
+			</Suspense>
 		</ErrorBoundary>
 	);
 };
