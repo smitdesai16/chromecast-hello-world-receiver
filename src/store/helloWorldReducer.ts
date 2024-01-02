@@ -6,7 +6,7 @@ export interface HelloWorldState {
 }
 
 const initialState: HelloWorldState = {
-	title: "Hello World 2",
+	title: "Hello World",
 };
 
 export const userSlice = createSlice({

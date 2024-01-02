@@ -12,6 +12,8 @@ import { languageConvertToApi } from "./converter/languageConverter";
 import { updateLanguageAction, updateLanguageDirAction, updateThemeAction } from "./store/userReducer";
 import { Language } from "./models/language";
 import { LanguageDir } from "./models/languageDir";
+import { updateTextAction } from "./store/helloWorldReducer";
+import { castContext, castOptions } from "./chromecastContext";
 
 interface IProps {
 	children: React.ReactNode;
@@ -42,6 +44,16 @@ export default function AppWrapper({ children }: IProps): JSX.Element {
 
 	useEffect(() => {
 		document.body.style.backgroundColor = theme.colorNeutralBackground1;
+	});
+
+	useEffect(() => {
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		castContext.addCustomMessageListener('urn:x-cast:com.example.castdata', function (customEvent: any) {
+			if (customEvent.data.type == "message") {
+				dispatch(updateTextAction(customEvent.data.text));
+			}
+		});
+		castContext.start(castOptions);
 	});
 
 	return (
