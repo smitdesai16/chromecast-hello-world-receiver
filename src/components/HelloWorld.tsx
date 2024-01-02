@@ -1,4 +1,4 @@
-import { Title1, Title2 } from "@fluentui/react-components";
+import { Title1, Title3 } from "@fluentui/react-components";
 import { useSelector } from "react-redux";
 import { RootState } from "../store/baseStore";
 
@@ -9,7 +9,8 @@ const HelloWorld = () => {
     return (
         <>
             <Title1 as="h1">{message}</Title1>
-            <Title2 as="h2">{sender}</Title2>
+            <br />
+            <Title3 as="h2">{sender}</Title3>
         </>
     );
 };
