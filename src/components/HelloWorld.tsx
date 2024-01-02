@@ -1,12 +1,13 @@
 import { Title1 } from "@fluentui/react-components";
-import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
+import { RootState } from "../store/baseStore";
 
 const HelloWorld = () => {
-    const { t } = useTranslation();
+    const title = useSelector((state: RootState) => state.helloWorld.title);
 
     return (
         <>
-            <Title1 as="h1">{t("HelloWorld.Title")}</Title1>
+            <Title1 as="h1">{title}</Title1>
         </>
     );
 };

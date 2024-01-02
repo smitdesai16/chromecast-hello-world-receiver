@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import UserReducer from "./userReducer";
+import helloWorldReducer from "./helloWorldReducer";
 
 export const BaseStore = configureStore({
 	reducer: {
 		user: UserReducer,
+		helloWorld: helloWorldReducer,
 	},
 });
 
