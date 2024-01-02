@@ -47,13 +47,18 @@ export default function AppWrapper({ children }: IProps): JSX.Element {
 	});
 
 	useEffect(() => {
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		castContext.addCustomMessageListener('urn:x-cast:com.example.castdata', function (customEvent: any) {
-			if (customEvent.data.type == "message") {
-				dispatch(updateTextAction(customEvent.data.text));
-			}
-		});
-		castContext.start(castOptions);
+		try {
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			castContext.addCustomMessageListener('urn:x-cast:com.example.castdata', function (customEvent: any) {
+				if (customEvent.data.type == "message") {
+					dispatch(updateTextAction(customEvent.data.text));
+				}
+			});
+			castContext.start(castOptions);
+		}
+		catch (exception) {
+			dispatch(updateTextAction(exception));
+		}
 	});
 
 	return (
