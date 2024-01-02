@@ -8,7 +8,7 @@ export interface HelloWorldState {
 
 const initialState: HelloWorldState = {
 	message: "Hello World",
-	sender: "",
+	sender: "unknown",
 };
 
 export const userSlice = createSlice({

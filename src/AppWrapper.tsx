@@ -48,42 +48,43 @@ export default function AppWrapper({ children }: IProps): JSX.Element {
 
 	useEffect(() => {
 		try {
-			// eslint-disable-next-line @typescript-eslint/no-explicit-any
-			castContext.addCustomMessageListener('urn:x-cast:io.smitdesai16.github.message', function (customEvent: any) {
-				dispatch(updateMessageAction(customEvent.data.message));
-				dispatch(updateSenderAction(customEvent.senderId));
-			});
-			castContext.addEventListener("READY", function () {
+			if (castContext) {
+				castContext.addCustomMessageListener('urn:x-cast:io.smitdesai16.github.message', function (customEvent: any) {
+					dispatch(updateMessageAction(customEvent.data.message));
+					dispatch(updateSenderAction(customEvent.senderId));
+				});
+				castContext.addEventListener("READY", function () {
 
-			});
-			castContext.addEventListener("SHUTDOWN", function () {
+				});
+				castContext.addEventListener("SHUTDOWN", function () {
 
-			});
-			castContext.addEventListener("SENDER_CONNECTED", function () {
+				});
+				castContext.addEventListener("SENDER_CONNECTED", function () {
 
-			});
-			castContext.addEventListener("SENDER_DISCONNECTED", function () {
+				});
+				castContext.addEventListener("SENDER_DISCONNECTED", function () {
 
-			});
-			castContext.addEventListener("ERROR", function () {
+				});
+				castContext.addEventListener("ERROR", function () {
 
-			});
-			castContext.addEventListener("SYSTEM_VOLUME_CHANGED", function () {
+				});
+				castContext.addEventListener("SYSTEM_VOLUME_CHANGED", function () {
 
-			});
-			castContext.addEventListener("VISIBILITY_CHANGED", function () {
+				});
+				castContext.addEventListener("VISIBILITY_CHANGED", function () {
 
-			});
-			castContext.addEventListener("STANDBY_CHANGED", function () {
+				});
+				castContext.addEventListener("STANDBY_CHANGED", function () {
 
-			});
-			castContext.addEventListener("MAX_VIDEO_RESOLUTION_CHANGED", function () {
+				});
+				castContext.addEventListener("MAX_VIDEO_RESOLUTION_CHANGED", function () {
 
-			});
-			castContext.addEventListener("FEEDBACK_STARTED", function () {
+				});
+				castContext.addEventListener("FEEDBACK_STARTED", function () {
 
-			});
-			castContext.start(castOptions);
+				});
+				castContext.start(castOptions);
+			}
 		}
 		catch (exception) {
 			dispatch(updateMessageAction(exception));

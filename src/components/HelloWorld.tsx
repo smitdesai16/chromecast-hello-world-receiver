@@ -8,9 +8,10 @@ const HelloWorld = () => {
 
     return (
         <>
-            <Title1 as="h1">{message}</Title1>
-            <br />
-            <Title3 as="h2">{sender}</Title3>
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+                <Title1 as="h1" style={{ margin: 0 }}>{message}</Title1>
+                <Title3 as="h2" style={{ margin: 0 }}>{sender}</Title3>
+            </div>
         </>
     );
 };
