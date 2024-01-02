@@ -12,7 +12,7 @@ import { languageConvertToApi } from "./converter/languageConverter";
 import { updateLanguageAction, updateLanguageDirAction, updateThemeAction } from "./store/userReducer";
 import { Language } from "./models/language";
 import { LanguageDir } from "./models/languageDir";
-import { updateMessageAction, updateSenderAction } from "./store/helloWorldReducer";
+import { updateEventNameAction, updateMessageAction, updateSenderAction, updateeventDetailAction } from "./store/helloWorldReducer";
 import { castContext, castOptions } from "./chromecastContext";
 
 interface IProps {
@@ -53,35 +53,45 @@ export default function AppWrapper({ children }: IProps): JSX.Element {
 					dispatch(updateMessageAction(customEvent.data.message));
 					dispatch(updateSenderAction(customEvent.senderId));
 				});
-				castContext.addEventListener("READY", function () {
-
+				castContext.addEventListener("READY", function (event) {
+					dispatch(updateEventNameAction("READY"));
+					dispatch(updateeventDetailAction(JSON.stringify(event)));
 				});
-				castContext.addEventListener("SHUTDOWN", function () {
-
+				castContext.addEventListener("SHUTDOWN", function (event) {
+					dispatch(updateEventNameAction("SHUTDOWN"));
+					dispatch(updateeventDetailAction(JSON.stringify(event)));
 				});
-				castContext.addEventListener("SENDER_CONNECTED", function () {
-
+				castContext.addEventListener("SENDER_CONNECTED", function (event) {
+					dispatch(updateEventNameAction("SENDER_CONNECTED"));
+					dispatch(updateeventDetailAction(JSON.stringify(event)));
 				});
-				castContext.addEventListener("SENDER_DISCONNECTED", function () {
-
+				castContext.addEventListener("SENDER_DISCONNECTED", function (event) {
+					dispatch(updateEventNameAction("SENDER_DISCONNECTED"));
+					dispatch(updateeventDetailAction(JSON.stringify(event)));
 				});
-				castContext.addEventListener("ERROR", function () {
-
+				castContext.addEventListener("ERROR", function (event) {
+					dispatch(updateEventNameAction("ERROR"));
+					dispatch(updateeventDetailAction(JSON.stringify(event)));
 				});
-				castContext.addEventListener("SYSTEM_VOLUME_CHANGED", function () {
-
+				castContext.addEventListener("SYSTEM_VOLUME_CHANGED", function (event) {
+					dispatch(updateEventNameAction("SYSTEM_VOLUME_CHANGED"));
+					dispatch(updateeventDetailAction(JSON.stringify(event)));
 				});
-				castContext.addEventListener("VISIBILITY_CHANGED", function () {
-
+				castContext.addEventListener("VISIBILITY_CHANGED", function (event) {
+					dispatch(updateEventNameAction("VISIBILITY_CHANGED"));
+					dispatch(updateeventDetailAction(JSON.stringify(event)));
 				});
-				castContext.addEventListener("STANDBY_CHANGED", function () {
-
+				castContext.addEventListener("STANDBY_CHANGED", function (event) {
+					dispatch(updateEventNameAction("STANDBY_CHANGED"));
+					dispatch(updateeventDetailAction(JSON.stringify(event)));
 				});
-				castContext.addEventListener("MAX_VIDEO_RESOLUTION_CHANGED", function () {
-
+				castContext.addEventListener("MAX_VIDEO_RESOLUTION_CHANGED", function (event) {
+					dispatch(updateEventNameAction("MAX_VIDEO_RESOLUTION_CHANGED"));
+					dispatch(updateeventDetailAction(JSON.stringify(event)));
 				});
-				castContext.addEventListener("FEEDBACK_STARTED", function () {
-
+				castContext.addEventListener("FEEDBACK_STARTED", function (event) {
+					dispatch(updateEventNameAction("FEEDBACK_STARTED"));
+					dispatch(updateeventDetailAction(JSON.stringify(event)));
 				});
 				castContext.start(castOptions);
 			}
