@@ -1,13 +1,15 @@
-import { Title1 } from "@fluentui/react-components";
+import { Title1, Title2 } from "@fluentui/react-components";
 import { useSelector } from "react-redux";
 import { RootState } from "../store/baseStore";
 
 const HelloWorld = () => {
-    const title = useSelector((state: RootState) => state.helloWorld.title);
+    const message = useSelector((state: RootState) => state.helloWorld.message);
+    const sender = useSelector((state: RootState) => state.helloWorld.sender);
 
     return (
         <>
-            <Title1 as="h1">{title}</Title1>
+            <Title1 as="h1">{message}</Title1>
+            <Title2 as="h2">{sender}</Title2>
         </>
     );
 };

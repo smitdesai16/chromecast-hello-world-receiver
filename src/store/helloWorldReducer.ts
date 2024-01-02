@@ -2,23 +2,28 @@ import { createSlice } from "@reduxjs/toolkit";
 import { PayloadAction } from "@reduxjs/toolkit";
 
 export interface HelloWorldState {
-	title: string;
+	message: string;
+	sender: string;
 }
 
 const initialState: HelloWorldState = {
-	title: "Hello World",
+	message: "Hello World",
+	sender: "",
 };
 
 export const userSlice = createSlice({
 	name: "user",
 	initialState,
 	reducers: {
-		updateTextAction: (state, action: PayloadAction<HelloWorldState["title"]>) => {
-			state.title = action.payload;
+		updateMessageAction: (state, action: PayloadAction<HelloWorldState["message"]>) => {
+			state.message = action.payload;
+		},
+		updateSenderAction: (state, action: PayloadAction<HelloWorldState["sender"]>) => {
+			state.sender = action.payload;
 		},
 	},
 });
 
-export const { updateTextAction } = userSlice.actions;
+export const { updateMessageAction, updateSenderAction } = userSlice.actions;
 
 export default userSlice.reducer;

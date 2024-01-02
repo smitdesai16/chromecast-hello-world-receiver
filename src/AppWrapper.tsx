@@ -12,7 +12,7 @@ import { languageConvertToApi } from "./converter/languageConverter";
 import { updateLanguageAction, updateLanguageDirAction, updateThemeAction } from "./store/userReducer";
 import { Language } from "./models/language";
 import { LanguageDir } from "./models/languageDir";
-import { updateTextAction } from "./store/helloWorldReducer";
+import { updateMessageAction, updateSenderAction } from "./store/helloWorldReducer";
 import { castContext, castOptions } from "./chromecastContext";
 
 interface IProps {
@@ -49,10 +49,39 @@ export default function AppWrapper({ children }: IProps): JSX.Element {
 	useEffect(() => {
 		try {
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
-			castContext.addCustomMessageListener('urn:x-cast:com.example.castdata', function (customEvent: any) {
-				if (customEvent.data.type == "message") {
-					dispatch(updateTextAction(customEvent.data.text));
-				}
+			castContext.addCustomMessageListener('urn:x-cast:io.smitdesai16.github.message', function (customEvent: any) {
+				dispatch(updateMessageAction(customEvent.data.message));
+				dispatch(updateSenderAction(customEvent.senderId));
+			});
+			castContext.addEventListener("READY", function () {
+
+			});
+			castContext.addEventListener("SHUTDOWN", function () {
+
+			});
+			castContext.addEventListener("SENDER_CONNECTED", function () {
+
+			});
+			castContext.addEventListener("SENDER_DISCONNECTED", function () {
+
+			});
+			castContext.addEventListener("ERROR", function () {
+
+			});
+			castContext.addEventListener("SYSTEM_VOLUME_CHANGED", function () {
+
+			});
+			castContext.addEventListener("VISIBILITY_CHANGED", function () {
+
+			});
+			castContext.addEventListener("STANDBY_CHANGED", function () {
+
+			});
+			castContext.addEventListener("MAX_VIDEO_RESOLUTION_CHANGED", function () {
+
+			});
+			castContext.addEventListener("FEEDBACK_STARTED", function () {
+
 			});
 			castContext.start(castOptions);
 		}
