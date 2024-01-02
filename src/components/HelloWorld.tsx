@@ -1,21 +1,22 @@
-import { Title1, Title3 } from "@fluentui/react-components";
+import { Title1 } from "@fluentui/react-components";
 import { useSelector } from "react-redux";
 import { RootState } from "../store/baseStore";
 
 const HelloWorld = () => {
-    const message = useSelector((state: RootState) => state.helloWorld.message);
-    const sender = useSelector((state: RootState) => state.helloWorld.sender);
-    const eventName = useSelector((state: RootState) => state.helloWorld.eventName);
-    const eventDetail = useSelector((state: RootState) => state.helloWorld.eventDetail);
+    const messages = useSelector((state: RootState) => state.helloWorld.messages);
+    //const events = useSelector((state: RootState) => state.helloWorld.events);
 
     return (
         <>
-            <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-                <Title1 as="h1" style={{ margin: 0 }}>{message}</Title1>
-                <Title3 as="h2" style={{ margin: 0 }}>{sender}</Title3>
-                <br/>
-                <Title1 as="h1" style={{ margin: 0 }}>{eventName}</Title1>
-                <Title3 as="h2" style={{ margin: 0 }}>{eventDetail}</Title3>
+            <div style={{ display: "flex", width: "100%", flexDirection: "row", justifyContent: "space-around" }}>
+                <div>
+                    <Title1>Custom Message</Title1>
+                    {messages.map((value, i) => <p key={i}>{value}</p>)}
+                </div>
+                {/*<div>*/}
+                {/*    <Title1>Event</Title1>*/}
+                {/*    {events.map((value, i) => <p key={i}>{value}</p>)}*/}
+                {/*</div>*/}
             </div>
         </>
     );

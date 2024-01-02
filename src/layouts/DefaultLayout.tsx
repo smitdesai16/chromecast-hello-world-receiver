@@ -9,7 +9,7 @@ const DefaultLayout = () => {
 
 	return (
 		<ErrorBoundary fallbackRender={fallbackRender}>
-			<div style={{ height: "100vh", width: "100%", display: "flex", justifyContent: "center", alignItems: "center" }}>
+			<div style={{ height: "100vh", width: "100%", display: "flex", overflow: "hidden" }}>
 				<Suspense fallback={<p>Loading Outlet</p>}>
 					<Outlet />
 				</Suspense>
