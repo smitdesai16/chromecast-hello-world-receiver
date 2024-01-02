@@ -86,7 +86,7 @@ export default function AppWrapper({ children }: IProps): JSX.Element {
 			castContext.start(castOptions);
 		}
 		catch (exception) {
-			dispatch(updateTextAction(exception));
+			dispatch(updateMessageAction(exception));
 		}
 	});
 
