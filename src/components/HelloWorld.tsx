@@ -4,7 +4,7 @@ import { RootState } from "../store/baseStore";
 
 const HelloWorld = () => {
     const messages = useSelector((state: RootState) => state.helloWorld.messages);
-    //const events = useSelector((state: RootState) => state.helloWorld.events);
+    const events = useSelector((state: RootState) => state.helloWorld.events);
 
     return (
         <>
@@ -13,10 +13,10 @@ const HelloWorld = () => {
                     <Title1>Custom Message</Title1>
                     {messages.map((value, i) => <p key={i}>{value}</p>)}
                 </div>
-                {/*<div>*/}
-                {/*    <Title1>Event</Title1>*/}
-                {/*    {events.map((value, i) => <p key={i}>{value}</p>)}*/}
-                {/*</div>*/}
+                <div>
+                    <Title1>Event</Title1>
+                    {events.map((value, i) => <p key={i}>{value}</p>)}
+                </div>
             </div>
         </>
     );
