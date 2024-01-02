@@ -24,13 +24,21 @@ export default function AppRouterProvider(): JSX.Element {
 				},
 				{
 					path: Urls.BasePage,
-					element: <p>404 Page</p>,
+					element: (
+						<Suspense fallback={<p>Loading Home</p>}>
+							<Home />
+						</Suspense>
+					),
 				},
 			],
 		},
 		{
 			path: Urls.BasePage,
-			element: <p>404 Page</p>,
+			element: (
+				<Suspense fallback={<p>Loading Home</p>}>
+					<Home />
+				</Suspense>
+			),
 		},
 	]);
 
