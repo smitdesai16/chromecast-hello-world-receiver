@@ -63,11 +63,11 @@ export default function AppWrapper({ children }: IProps): JSX.Element {
 				});
 				castContext.addEventListener("shutdown", function () {
 					dispatch(addEventAction("Event: shutdown"));
-					const senders = castContext.getSenders();
-					dispatch(addEventAction("senders: " + JSON.stringify(senders)));
 				});
 				castContext.addEventListener("senderconnected", function () {
 					dispatch(addEventAction("Event: senderconnected"));
+					const senders = castContext.getSenders();
+					dispatch(addEventAction("senders: " + JSON.stringify(senders)));
 				});
 				castContext.addEventListener("senderdisconnected", function () {
 					dispatch(addEventAction("Event: senderdisconnected"));
