@@ -11,11 +11,11 @@ const HelloWorld = () => {
             <div style={{ display: "flex", width: "100%", flexDirection: "row", justifyContent: "space-around" }}>
                 <div>
                     <Title1>Custom Message</Title1>
-                    {messages.map((value, i) => <p key={i}>{value}</p>)}
+                    {messages.map((value, i) => <p key={i} style={{ wordBreak: "break-all" }}>{value}</p>)}
                 </div>
                 <div>
                     <Title1>Event</Title1>
-                    {events.map((value, i) => <p key={i}>{value}</p>)}
+                    {events.map((value, i) => <p key={i} style={{ wordBreak: "break-all" }}>{value}</p>)}
                 </div>
             </div>
         </>
