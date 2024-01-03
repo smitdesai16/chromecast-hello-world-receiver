@@ -55,52 +55,58 @@ export default function AppWrapper({ children }: IProps): JSX.Element {
 
 				//cast.framework.system.EventType
 				castContext.addEventListener("ready", function () {
-					dispatch(addEventAction("READY -> "));
+					dispatch(addEventAction("Event: ready"));
+					const applicationData = castContext.getApplicationData();
+					dispatch(addEventAction("applicationData: " + JSON.stringify(applicationData)));
+					const deviceCapabilities = castContext.getDeviceCapabilities();
+					dispatch(addEventAction("deviceCapabilities: " + JSON.stringify(deviceCapabilities)));
 				});
 				castContext.addEventListener("shutdown", function () {
-					dispatch(addEventAction("SHUTDOWN -> "));
+					dispatch(addEventAction("Event: shutdown"));
+					const senders = castContext.getSenders();
+					dispatch(addEventAction("senders: " + JSON.stringify(senders)));
 				});
 				castContext.addEventListener("senderconnected", function () {
-					dispatch(addEventAction("SENDER_CONNECTED -> "));
+					dispatch(addEventAction("Event: senderconnected"));
 				});
 				castContext.addEventListener("senderdisconnected", function () {
-					dispatch(addEventAction("SENDER_DISCONNECTED -> "));
+					dispatch(addEventAction("Event: senderdisconnected"));
 				});
 				castContext.addEventListener("error", function () {
-					dispatch(addEventAction("ERROR -> "));
+					dispatch(addEventAction("Event: error"));
 				});
 				castContext.addEventListener("systemvolumechanged", function () {
-					dispatch(addEventAction("SYSTEM_VOLUME_CHANGED -> "));
+					dispatch(addEventAction("Event: systemvolumechanged"));
 				});
 				castContext.addEventListener("visibilitychanged", function () {
-					dispatch(addEventAction("VISIBILITY_CHANGED -> "));
+					dispatch(addEventAction("Event: visibilitychanged"));
 				});
 				castContext.addEventListener("standbychanged", function () {
-					dispatch(addEventAction("STANDBY_CHANGED -> "));
+					dispatch(addEventAction("Event: standbychanged"));
 				});
 				castContext.addEventListener("maxvideoresolutionchanged", function () {
-					dispatch(addEventAction("MAX_VIDEO_RESOLUTION_CHANGED -> "));
+					dispatch(addEventAction("Event: maxvideoresolutionchanged"));
 				});
 				castContext.addEventListener("feedbackstarted", function () {
-					dispatch(addEventAction("FEEDBACK_STARTED -> "));
+					dispatch(addEventAction("Event: feedbackstarted"));
 				});
 				castContext.addEventListener("allowgroupchange", function () {
-					dispatch(addEventAction("ALLOW_GROUP_CHANGE -> "));
+					dispatch(addEventAction("Event: allowgroupchange"));
 				});
 				castContext.addEventListener("groupcapabilities", function () {
-					dispatch(addEventAction("GROUP_CAPABILITIES -> "));
+					dispatch(addEventAction("Event: groupcapabilities"));
 				});
 				castContext.addEventListener("playbackdevicestatus", function () {
-					dispatch(addEventAction("PLAYBACK_DEVICE_STATUS -> "));
+					dispatch(addEventAction("Event: playbackdevicestatus"));
 				});
 				castContext.addEventListener("showmediacontrols", function () {
-					dispatch(addEventAction("SHOW_MEDIA_CONTROLS -> "));
+					dispatch(addEventAction("Event: showmediacontrols"));
 				});
 
 				//cast.framework.events.EventType
 				//cast.framework.ui.PlayerDataEventType
 				castContext.addEventListener("*", function () {
-					dispatch(addEventAction("* -> "));
+					dispatch(addEventAction("Event: *"));
 				});
 
 				castContext.start(castOptions);
