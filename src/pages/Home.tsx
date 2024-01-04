@@ -12,7 +12,7 @@ const Home = () => {
 
 	return (
 		<ErrorBoundary fallbackRender={fallbackRender}>
-			<div style={{ display: "grid", width: "100%", gridTemplateColumns: "repeat(2, 1fr)" }}>
+			<div style={{ display: "grid", width: "100%", gridTemplateColumns: "repeat(2, 1fr)", wordBreak: "break-all" }}>
 				<Suspense fallback={<p>Loading Application Detail</p>}>
 					<ApplicationDetail />
 				</Suspense>
