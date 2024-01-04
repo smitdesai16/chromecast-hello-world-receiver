@@ -1,0 +1,1 @@
+import{j as r}from"./secondPulse-ebdW4FYu.js";import{E as n}from"./react-error-boundary.esm-7hLK8AfQ.js";import"./index-pjiBuUgL.js";import"./firstPulse-n2Q2Di9W.js";function m({children:o}){const t=()=>r.jsx("p",{children:"Error"});return r.jsx(n,{fallbackRender:t,children:o})}export{m as default};
