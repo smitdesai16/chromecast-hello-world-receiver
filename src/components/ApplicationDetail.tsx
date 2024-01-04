@@ -12,6 +12,14 @@ const ApplicationDetail = () => {
     const namespaces = useSelector((state: RootState) => state.applicationDetail.namespaces);
     const sessionId = useSelector((state: RootState) => state.applicationDetail.sessionId);
     const deviceCapabilities = useSelector((state: RootState) => state.applicationDetail.deviceCapabilities);
+    const deviceCapabilityList: Array<string> = [];
+
+    Object.entries(deviceCapabilities)
+        .forEach(([key, value]) => {
+            if (value === true) {
+                deviceCapabilityList.push(key);
+            }
+        });
 
     return (
         <div style={{ background: theme.colorPaletteRedBackground1 }}>
@@ -25,7 +33,11 @@ const ApplicationDetail = () => {
                 <li>Name: {name}</li>
                 <li>Namespaces: {namespaces}</li>
                 <li>Session Id: {sessionId}</li>
-                <li>Device Capabilities: {JSON.stringify(deviceCapabilities)}</li>
+                <li>Device Capabilities:
+                    <ul>
+                        {deviceCapabilityList.map((value, i) => <li key={i}>{value}</li>)}
+                    </ul>
+                </li>
             </ul>
         </div>
     );
