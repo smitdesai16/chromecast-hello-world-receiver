@@ -1,0 +1,1 @@
+import{j as r}from"./secondPulse-hoc6Lbg9.js";import{P as t}from"./react-redux-dUcFEmws.js";import{c as s,e as a,a as o,m as i,s as d}from"./senderReducer-Nd3QKQB4.js";import"./index-f9wZsgVc.js";import"./firstPulse-HBQm0ihX.js";const m=s({reducer:{event:a,applicationDetail:o,message:i,sender:d}});function l({children:e}){return r.jsx(t,{store:m,children:e})}export{l as default};
