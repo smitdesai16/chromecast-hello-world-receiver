@@ -10,7 +10,7 @@ const Senders = () => {
     return (
         <div style={{ background: theme.colorPaletteDarkGreenBackground2 }}>
             <div style={{ textAlign: "center" }}>
-                <Title1>Senders</Title1>
+                <Title1>Senders ({senders.length})</Title1>
             </div>
             <ul>
                 {senders.map((value, i) => <li key={i}>{value}</li>)}
