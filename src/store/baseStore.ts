@@ -1,11 +1,15 @@
 import { configureStore } from "@reduxjs/toolkit";
-import UserReducer from "./userReducer";
-import helloWorldReducer from "./helloWorldReducer";
+import eventReducer from "./eventReducer";
+import applicationDetailReducer from "./applicationDetailReducer";
+import messageReducer from "./messageReducer";
+import senderReducer from "./senderReducer";
 
 export const BaseStore = configureStore({
 	reducer: {
-		user: UserReducer,
-		helloWorld: helloWorldReducer,
+		event: eventReducer,
+		applicationDetail: applicationDetailReducer,
+		message: messageReducer,
+		sender: senderReducer,
 	},
 });
 

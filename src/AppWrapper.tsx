@@ -1,19 +1,12 @@
 import { FluentProvider } from "@fluentui/react-components";
-import i18next from "i18next";
 import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { LocalCacheAccessor } from "./cache/localCacheAccessor";
-import { languageDirConvertToApi } from "./converter/languageDirConverter";
-import { CacheTable, UserCacheLanguage, UserCacheLanguageDir, UserCacheTheme } from "./models/cacheTable";
-import { Theme } from "./models/theme";
-import { RootState } from "./store/baseStore";
+import { useDispatch } from "react-redux";
 import { useTheme } from "./hooks/useTheme";
-import { languageConvertToApi } from "./converter/languageConverter";
-import { updateLanguageAction, updateLanguageDirAction, updateThemeAction } from "./store/userReducer";
-import { Language } from "./models/language";
-import { LanguageDir } from "./models/languageDir";
-import { addMessageAction, addEventAction } from "./store/helloWorldReducer";
 import { castContext, castOptions } from "./chromecastContext";
+import { Message, addMessageAction } from "./store/messageReducer";
+import { updateSenderAction } from "./store/senderReducer";
+import { addEventAction } from "./store/eventReducer";
+import { addApplicationDataAction, addDeviceCapabilitiesAction } from "./store/applicationDetailReducer";
 
 interface IProps {
 	children: React.ReactNode;
@@ -26,21 +19,6 @@ interface IProps {
 export default function AppWrapper({ children }: IProps): JSX.Element {
 	const dispatch = useDispatch();
 	const theme = useTheme();
-	const languageDir = useSelector((state: RootState) => state.user.languageDir);
-
-	useEffect(() => {
-		(async () => {
-			const currentLanguage = await LocalCacheAccessor.getFromLocalCache<number>(CacheTable.UserCache, UserCacheLanguage, Language.en);
-			dispatch(updateLanguageAction(currentLanguage));
-			await i18next.changeLanguage(languageConvertToApi(currentLanguage));
-
-			const currentLanguageDir = await LocalCacheAccessor.getFromLocalCache<number>(CacheTable.UserCache, UserCacheLanguageDir, LanguageDir.Ltr);
-			dispatch(updateLanguageDirAction(currentLanguageDir));
-
-			const currentTheme = await LocalCacheAccessor.getFromLocalCache<number>(CacheTable.UserCache, UserCacheTheme, Theme.Light);
-			dispatch(updateThemeAction(currentTheme));
-		})();
-	});
 
 	useEffect(() => {
 		document.body.style.backgroundColor = theme.colorNeutralBackground1;
@@ -48,75 +26,79 @@ export default function AppWrapper({ children }: IProps): JSX.Element {
 
 	useEffect(() => {
 		try {
-			if (castContext) {
-				castContext.addCustomMessageListener('urn:x-cast:io.smitdesai16.github.message', function (customEvent: any) {
-					dispatch(addMessageAction(customEvent.senderId + " -> " + customEvent.data.message));
-				});
+			const initializeCastContextInterval = setInterval(function () {
+				if (castContext) {
+					clearInterval(initializeCastContextInterval);
+					castContext.addCustomMessageListener('urn:x-cast:io.smitdesai16.github.message', function (customEvent: any) {
+						dispatch(addMessageAction(new Message(customEvent.senderId, customEvent.data.message)));
+					});
 
-				//cast.framework.system.EventType
-				castContext.addEventListener("ready", function () {
-					dispatch(addEventAction("Event: ready"));
-					const applicationData = castContext.getApplicationData();
-					dispatch(addEventAction("applicationData: " + JSON.stringify(applicationData)));
-					const deviceCapabilities = castContext.getDeviceCapabilities();
-					dispatch(addEventAction("deviceCapabilities: " + JSON.stringify(deviceCapabilities)));
-				});
-				castContext.addEventListener("shutdown", function () {
-					dispatch(addEventAction("Event: shutdown"));
-				});
-				castContext.addEventListener("senderconnected", function () {
-					dispatch(addEventAction("Event: senderconnected"));
-					const senders = castContext.getSenders();
-					dispatch(addEventAction("senders: " + JSON.stringify(senders)));
-				});
-				castContext.addEventListener("senderdisconnected", function () {
-					dispatch(addEventAction("Event: senderdisconnected"));
-				});
-				castContext.addEventListener("error", function () {
-					dispatch(addEventAction("Event: error"));
-				});
-				castContext.addEventListener("systemvolumechanged", function () {
-					dispatch(addEventAction("Event: systemvolumechanged"));
-				});
-				castContext.addEventListener("visibilitychanged", function () {
-					dispatch(addEventAction("Event: visibilitychanged"));
-				});
-				castContext.addEventListener("standbychanged", function () {
-					dispatch(addEventAction("Event: standbychanged"));
-				});
-				castContext.addEventListener("maxvideoresolutionchanged", function () {
-					dispatch(addEventAction("Event: maxvideoresolutionchanged"));
-				});
-				castContext.addEventListener("feedbackstarted", function () {
-					dispatch(addEventAction("Event: feedbackstarted"));
-				});
-				castContext.addEventListener("allowgroupchange", function () {
-					dispatch(addEventAction("Event: allowgroupchange"));
-				});
-				castContext.addEventListener("groupcapabilities", function () {
-					dispatch(addEventAction("Event: groupcapabilities"));
-				});
-				castContext.addEventListener("playbackdevicestatus", function () {
-					dispatch(addEventAction("Event: playbackdevicestatus"));
-				});
-				castContext.addEventListener("showmediacontrols", function () {
-					dispatch(addEventAction("Event: showmediacontrols"));
-				});
+					setInterval(function () {
+						dispatch(updateSenderAction(castContext.getSenders().map(x => x.id)));
+					}, 500);
 
-				//cast.framework.events.EventType
-				//cast.framework.ui.PlayerDataEventType
-				castContext.addEventListener("*", function () {
-					dispatch(addEventAction("Event: *"));
-				});
+					//cast.framework.system.EventType
+					castContext.addEventListener("ready", function () {
+						dispatch(addEventAction("ready"));
 
-				castContext.start(castOptions);
-			}
+						dispatch(addApplicationDataAction(castContext.getApplicationData()));
+						dispatch(addDeviceCapabilitiesAction(castContext.getDeviceCapabilities()));
+					});
+					castContext.addEventListener("shutdown", function () {
+						dispatch(addEventAction("shutdown"));
+					});
+					castContext.addEventListener("senderconnected", function () {
+						dispatch(addEventAction("senderconnected"));
+					});
+					castContext.addEventListener("senderdisconnected", function () {
+						dispatch(addEventAction("senderdisconnected"));
+					});
+					castContext.addEventListener("error", function () {
+						dispatch(addEventAction("error"));
+					});
+					castContext.addEventListener("systemvolumechanged", function () {
+						dispatch(addEventAction("systemvolumechanged"));
+					});
+					castContext.addEventListener("visibilitychanged", function () {
+						dispatch(addEventAction("visibilitychanged"));
+					});
+					castContext.addEventListener("standbychanged", function () {
+						dispatch(addEventAction("standbychanged"));
+					});
+					castContext.addEventListener("maxvideoresolutionchanged", function () {
+						dispatch(addEventAction("maxvideoresolutionchanged"));
+					});
+					castContext.addEventListener("feedbackstarted", function () {
+						dispatch(addEventAction("feedbackstarted"));
+					});
+					castContext.addEventListener("allowgroupchange", function () {
+						dispatch(addEventAction("allowgroupchange"));
+					});
+					castContext.addEventListener("groupcapabilities", function () {
+						dispatch(addEventAction("groupcapabilities"));
+					});
+					castContext.addEventListener("playbackdevicestatus", function () {
+						dispatch(addEventAction("playbackdevicestatus"));
+					});
+					castContext.addEventListener("showmediacontrols", function () {
+						dispatch(addEventAction("showmediacontrols"));
+					});
+
+					//cast.framework.events.EventType
+					//cast.framework.ui.PlayerDataEventType
+					castContext.addEventListener("*", function () {
+						dispatch(addEventAction("*"));
+					});
+
+					castContext.start(castOptions);
+				}
+			}, 500);
 		}
 		catch (exception) { /* empty */ }
 	});
 
 	return (
-		<FluentProvider theme={theme} dir={languageDirConvertToApi(languageDir)}>
+		<FluentProvider theme={theme}>
 			{children}
 		</FluentProvider>
 	);
