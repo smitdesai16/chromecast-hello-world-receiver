@@ -2,7 +2,6 @@ import { FluentProvider } from "@fluentui/react-components";
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useTheme } from "./hooks/useTheme";
-import { castContext, castOptions } from "./chromecastContext";
 import { Message, addMessageAction } from "./store/messageReducer";
 import { updateSenderAction } from "./store/senderReducer";
 import { addEventAction } from "./store/eventReducer";
@@ -26,71 +25,77 @@ export default function AppWrapper({ children }: IProps): JSX.Element {
 
 	useEffect(() => {
 		try {
-			const initializeCastContextInterval = setInterval(function () {
-				if (castContext) {
-					clearInterval(initializeCastContextInterval);
-					castContext.addCustomMessageListener('urn:x-cast:io.smitdesai16.github.message', function (customEvent: any) {
+			const loadCastContextInterval = setInterval(function () {
+				if (window["cast"]) {
+					clearInterval(loadCastContextInterval);
+					const castReceiverOptions = new window["cast"].framework.CastReceiverOptions();
+					castReceiverOptions.disableIdleTimeout = true;
+					castReceiverOptions.maxInactivity = 5;
+					castReceiverOptions.versionCode = 1; // keep incrementing this
+					const castReceiverContext = window["cast"].framework.CastReceiverContext.getInstance();
+
+					castReceiverContext.addCustomMessageListener('urn:x-cast:io.smitdesai16.github.message', function (customEvent: any) {
 						dispatch(addMessageAction(new Message(customEvent.senderId, customEvent.data.message)));
 					});
 
 					setInterval(function () {
-						dispatch(updateSenderAction(castContext.getSenders().map(x => x.id)));
+						dispatch(updateSenderAction(castReceiverContext.getSenders().map(x => x.id)));
 					}, 500);
 
 					//cast.framework.system.EventType
-					castContext.addEventListener("ready", function () {
+					castReceiverContext.addEventListener("ready", function () {
 						dispatch(addEventAction("ready"));
 
-						dispatch(addApplicationDataAction(castContext.getApplicationData()));
-						dispatch(addDeviceCapabilitiesAction(castContext.getDeviceCapabilities()));
+						dispatch(addApplicationDataAction(castReceiverContext.getApplicationData()));
+						dispatch(addDeviceCapabilitiesAction(castReceiverContext.getDeviceCapabilities()));
 					});
-					castContext.addEventListener("shutdown", function () {
+					castReceiverContext.addEventListener("shutdown", function () {
 						dispatch(addEventAction("shutdown"));
 					});
-					castContext.addEventListener("senderconnected", function () {
+					castReceiverContext.addEventListener("senderconnected", function () {
 						dispatch(addEventAction("senderconnected"));
 					});
-					castContext.addEventListener("senderdisconnected", function () {
+					castReceiverContext.addEventListener("senderdisconnected", function () {
 						dispatch(addEventAction("senderdisconnected"));
 					});
-					castContext.addEventListener("error", function () {
+					castReceiverContext.addEventListener("error", function () {
 						dispatch(addEventAction("error"));
 					});
-					castContext.addEventListener("systemvolumechanged", function () {
+					castReceiverContext.addEventListener("systemvolumechanged", function () {
 						dispatch(addEventAction("systemvolumechanged"));
 					});
-					castContext.addEventListener("visibilitychanged", function () {
+					castReceiverContext.addEventListener("visibilitychanged", function () {
 						dispatch(addEventAction("visibilitychanged"));
 					});
-					castContext.addEventListener("standbychanged", function () {
+					castReceiverContext.addEventListener("standbychanged", function () {
 						dispatch(addEventAction("standbychanged"));
 					});
-					castContext.addEventListener("maxvideoresolutionchanged", function () {
+					castReceiverContext.addEventListener("maxvideoresolutionchanged", function () {
 						dispatch(addEventAction("maxvideoresolutionchanged"));
 					});
-					castContext.addEventListener("feedbackstarted", function () {
+					castReceiverContext.addEventListener("feedbackstarted", function () {
 						dispatch(addEventAction("feedbackstarted"));
 					});
-					castContext.addEventListener("allowgroupchange", function () {
+					castReceiverContext.addEventListener("allowgroupchange", function () {
 						dispatch(addEventAction("allowgroupchange"));
 					});
-					castContext.addEventListener("groupcapabilities", function () {
+					castReceiverContext.addEventListener("groupcapabilities", function () {
 						dispatch(addEventAction("groupcapabilities"));
 					});
-					castContext.addEventListener("playbackdevicestatus", function () {
+					castReceiverContext.addEventListener("playbackdevicestatus", function () {
 						dispatch(addEventAction("playbackdevicestatus"));
 					});
-					castContext.addEventListener("showmediacontrols", function () {
+					castReceiverContext.addEventListener("showmediacontrols", function () {
 						dispatch(addEventAction("showmediacontrols"));
 					});
 
 					//cast.framework.events.EventType
 					//cast.framework.ui.PlayerDataEventType
-					castContext.addEventListener("*", function () {
+					castReceiverContext.addEventListener("*", function () {
 						dispatch(addEventAction("*"));
 					});
 
-					castContext.start(castOptions);
+					castReceiverContext.start(castReceiverOptions);
 				}
 			}, 500);
 		}
