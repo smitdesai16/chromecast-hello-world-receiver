@@ -34,6 +34,8 @@ export default function AppWrapper({ children }: IProps): JSX.Element {
 					castReceiverOptions.versionCode = 1; // keep incrementing this
 					const castReceiverContext = window["cast"].framework.CastReceiverContext.getInstance();
 
+					castReceiverContext.setInactivityTimeout(5);
+
 					castReceiverContext.addCustomMessageListener('urn:x-cast:io.smitdesai16.github.message', function (customEvent: any) {
 						dispatch(addMessageAction(new Message(customEvent.senderId, customEvent.data.message)));
 					});
